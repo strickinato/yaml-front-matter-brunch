@@ -4,7 +4,11 @@ var marked = require('marked');
 var hljs = require('highlight.js');
 
 module.exports = FrontMatterCompiler = (function() {
-  function FrontMatterCompiler() {};
+  function FrontMatterCompiler(config) {
+    var frontMatterConfig = {};
+    frontMatterConfig.keepMarkdown = (config.plugins.frontMatter || {}).keepMarkdown || false;
+    this.frontMatterConfig = frontMatterConfig;
+  };
 
   // Set to true if you want to convert markdown to html before JSON is outputted
   FrontMatterCompiler.prototype.precompileMarkdown = true;
@@ -33,10 +37,11 @@ module.exports = FrontMatterCompiler = (function() {
       var compiled = jsYaml.loadFront(data);
 
       // Precompile if enabled and files are markdown
-      if (this.precompileMarkdown) {
+      if (this.frontMatterConfig.precompileMarkdown) {
         compiled.__content = marked(compiled.__content);
       }
 
+      console.log(compiled);
       compiled = JSON.stringify(compiled);
       compiled = this.modulesPrefix + compiled;
       return result = compiled;
