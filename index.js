@@ -41,7 +41,6 @@ module.exports = FrontMatterCompiler = (function() {
         compiled.__content = marked(compiled.__content);
       }
 
-      console.log(compiled);
       compiled = JSON.stringify(compiled);
       compiled = this.modulesPrefix + compiled;
       return result = compiled;
